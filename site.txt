@@ -1,0 +1,213 @@
+The Infinite Zoom Effect
+USING GENERATIVE AI AND OUTPAINTING FOR CREATING STUNNING ZOOM ANIMATIONS
+
+
+A series of three images created by a generative AI using outpainting.
+The rise of generative AI
+
+2022 and 2023 will be known as the years when generative AI hit the mainstream. In particular, text-to-image generators have freed the image creation process from the constraints of natural talent. As a result, individuals can now create stunning visuals without necessarily having any innate artistic ability. Programmes such as Midjourney, Stable Diffusion, Dall-E 2 or Adobe's Firefly offer the ability to create images from textual user input. A chipmunk as a Jedi knight? No problem. A woman in a dress made of smoke? Easy. An astronaut on Mars looking at a volcano? There you go.
+
+
+AI generated image (Midjourney); Prompt: "A chipmunk as a Jedi Knight.
+
+AI generated image (Midjourney); Prompt: "Portrait of a woman in a long flowing dress made up of smoke."
+
+AI generated image (Midjourney); Prompt: "An astronaut is standing on Mars watching the eruption of a volcano."
+AI-Outpainging
+
+One of the use cases for these programmes is something called "content aware fill". This is a technology that fills in missing parts of an image based on the available image data. It is something that has previously been done algorithmically, for example in Adobe Photoshop. The new AI-based approaches are more powerful because the AI can be instructed to fill the gaps in an image with specific content. For example, you have taken a photo of a building and later realise that you have cut off the top of the building. You can now use AI to fill in the missing parts of the image. It may not be exactly what was there, but it will be close enough that the human eye cannot tell the difference. This is known as "outpainting".
+
+You can also use outpainting to repeatedly zoom out of an image and let the AI fill in the newly created empty space. Then do it again and again and again. If you put this sequence of images into a video, the result will look like an infinite zoom. This article shows you how to do this.
+
+
+An "infinite" zoom created by a sequence of AI generated images.
+Zoom sequence image creation
+
+
+Outpainting and reprompting can be done with Midjourneys "Custom Zoom" feature.
+Before you start, you will need a set of outpainted ai generated images. For this example, they will by created by Midjourney. Midjourney is accessible through a Discord chat bot. The command to start a prompt is /imagine. The command opens a text box where you enter the prompt. The first image is the innermost image of the series. We start with the following prompt:
+
+A cozy room with a chair standing by a fireplace. An old woman is sitting in the chair reading a book. A black cat is sitting in front of the fire place. --s 200 --ar 16:9
+The prompt is followed by commands to specify the aspect ratio of the output image and to set the stylize parameter. This parameter defines how much artistic freedom Midjourney is allowed to take when processing the prompt.
+
+Once the initial image is generated you can use the "Custom Zoom" feature to zoom out of the image. A dialogue allows you to modify the prompt. It is important to use a constant zoom ratio for each successive zoom step.
+
+Prompt Modifications
+
+It is advisable to change the prompt every few zoom steps to introduce scene transitions. A scene transition simply sets a new narrative for the scene. For example, you could start with the prompt "A car in front of a house". You repeat the prompt once for the second image and then change it to "A framed picture of a car in front of a house hanging on the wall". You are no longer in a street scene, but in a living room. You can repeat this prompt for the next outpainted image and then change the prompt again to "A living room seen through a portal to another dimension". You are now in a fantasy setting. The possibilities are endless.
+
+The following is an example for the evolution of the a prompt during the image creation process:
+
+A cozy room with a chair standing by a fireplace. An old woman is sitting in the chair reading a book. --s 200 --ar 16:9 
+A cozy room with a chair standing by a fireplace. An old woman is sitting in the chair reading a book. --s 200 --ar 16:9 --zoom 2 
+A look through an opening into a cozy room. --s 200 --ar 16:9 --zoom 2 
+A cosy room seen through a rectangular mirror with an ornate frame. --s 200 --ar 16:9 --zoom 2 
+A fairy in a white dress standing right to a mirror. --s 200 --ar 16:9 --zoom 2 
+A fairy in a white dress standing right to a mirror. --s 200 --ar 16:9 --zoom 2 
+A fairy in a white dress standing right to a mirror. --s 200 --ar 16:9 --zoom 2 
+A portal into another dimensions. Butterflies all over the place. --ar 16:9 --zoom 2 
+An eye shaped portal into another dimension. Butterflies all over the place. --ar 16:9 --zoom 2 
+An eye shaped portal into another dimension. Butterflies all over the place. --ar 16:9 --zoom 2 
+A glass sphere. --ar 16:9 --zoom 2 
+A glass sphere on top of a wooden table. --ar 16:9 --zoom 2 
+Two swordmasters facing one another in a room with a wooden floor. --ar 16:9 --zoom 2
+The result is a series of images like the one below. The next step is to turn this series of images into a zoom video, where you either zoom in or out.
+
+
+Result of a zoom image series generated by Midjourney.
+Video Generation
+
+
+A video created out of the image series above.
+Your next task is to order the series of images by labelling them with ascending frame numbers, starting with the outermost. Then you have to feed them into your favourite video editing software, arrange them, zoom in on each frame and hope for the best. This is a tedious and labour-intensive process, as Midjourney throws you a few curve balls. The images are not perfectly aligned and there can be slight variations in the edges of the scene from one image to the next. It is not impossible to do this manually, but it is a lot of work.
+
+I couldn't do it, but I'm not a video editing wizard. However, I am a programmer who likes to automate things. So I wrote a script to automate the process entirely. The script is written in Python and uses OpenCV to sort the images, align them, compensate for any misalignment and then create an mp4 video sequence. All you have to do is provide the images, tell the script the zoom factor and the script does the rest. The script is available on GitHub:
+
+DOWNLOAD INFINITE-ZOOM-GENERATOR
+
+To use this script Python must be installed on your system. During the installation make sure to add Python to the system path. Once you have installed Python you can download the script from GitHub or check it out using Git. Below is the command line for Linux Bash to do this.
+
+git clone https://github.com/beltoforion/AI-Infinite-Zoom-Generator.git
+cd ./AI-Infinite-Zoom-Generator/
+pip install opencv-python
+Then download one of the sample image sets from here and extract them into the script folder.
+
+sample_pirate.zip
+sample_nostradamus.zip
+sample_fairytale.zip
+Now you can run the script. In this minimal example the option "-as" tells the script to automatically sort the images. You can omit this option if you have already sorted the images manually. The option "-i" specifies the input folder and the and the option "-o" specifies the output file.
+
+python3 ./infinite_zoom.py -as -i ./sample_fairytale -o video.mp4
+Alternatively if you only want to save the frames:
+
+python3 ./infinite_zoom.py -as -i ./sample_fairytale -o myframes/
+Below is a full list of command line options.
+
+Parameter	Description
+-as	Automatically sort input images. If you use this option you can name the images arbitrarily. The script will figure out the right order on its own. This may take some time but is usually fairly realiable.
+-dbg	Show debug overlays. Use this option if you want to see how the sausage is made. It will give you markers for image positions and print out misalignment values.
+-fps	Frame rate of the output video.
+-i	Path to folder with input images.
+-o	
+Name of the output video file or folder. This must either be a file name (including the mp4 ending) or a folder name. If a folder name is given no video file will be created. Instead all single frames will be saved in the output folder in PNG-Format.
+
+Examples:
+-o MyVideoFile.mp4
+-o MyFrameFolder/
+-rev	Reverse the output video. Default is zoom in. If this flag is set a zoom out video is created.
+-zc	Crop zoomed images by this factor. Must be between 0.1 and 0.95. Midjourney takes some liberties in modyfing the edge regions between zoom steps. They may not match perfectly when used in their original size. For more details read the section about fixing image misalignment and content deviations.
+-zf	Zoom factor used for creating the outpinted image sequence. For image sequences created by Midjourney use either "2" or "1.33". (Midjourney incorrectly states that its low zoom level is 1.5 but it is actually just 1.33)
+-zs	Number of zoom steps for each image. The total frame count of the final video will be number_of_images * mumber_of_zoom_steps
+How the Script works
+
+Let's look behind the scenes and see how the script works. The script is written in Python and uses OpenCV to do the heavy lifting. The first task is to sort the images. The second task is to compute the zoom steps. Finally, the images are aligned and cropped and then put into a video.
+
+Automatic Sorting
+
+The automatic sorting is done using OpenCV's template matching with a normalised cross-correlation algorithm. Each image is cross correlated with a scaled-down version of all other images. This can be seen below. The original image is displayed in the top left corner. Scaled-down versions of the other images which are the candidates for the previous image in the zoom series are displayed in the lower left corner. The best matching image so far is displayed in the top right corner. This is the most likely precursor to the current image.
+
+The bottom right corner shows the result of the normalized cross correlation. The brightness at a particular point indicates how well the two images match when the scaled down version is moved to that position. The brighter the spot, the better the match. In theory, the resulting cross correlation image of the scaled down previous image in a zoom series should have a bright white spot in the centre of the image. This is what we are looking for. The size of the cross correlation image is smaller than the original image because the cross correlation between two images can only be computed when both images overlap completely. Therefore it cannot be computed at the edges of the image.
+
+
+Finding the image order by using template matching. Note that for the image at the 7 second mark the best match has a low score value of 0.54 and is not a good fit. That is because this is the first image of the sequence and there is indeed not good match for it amongst the sequence. The lack a proper match is used as an indication for this being the first image.
+Now we know the followup image to each image in the series. What remains is to identify the first and last images. The first image is the image that cannot be identified as the successor to any other image. The last image in the series will have no other image that has a high cross-correlation value with it.
+
+Computing the zoom steps
+
+Once the images are sorted, the zoom animation can be calculated. The zoom starts with the last image in the sequence. This image is displayed in full screen at the beginning. Its zoom factor is therefore 1. The next image in the series is then scaled down by the outpainting zoom factor and superimposed on the first image in the centre. If the outpainting zoom factor was 2 the initial zoom of the inner image is 1/2. (One divided by the outpainting zoom factor) You should not be able to tell where one image ends and the other begins, as they both show the same scene.
+
+Now both images must be gradually upscaled until the zoom factor of the inner image reaches 1 and it fills the screen completely. The zoom factor of the outter image will then be 2, which is also the outpainting zoom factor of the sequence. After that the next image of the sequence will be introduced in its center. The zooming is done by scaling both images with the same factor repeatedly until the inner image fills the screen completely. The core of the zoom loop implementation in Python is shown below. It uses the getRotationMatrix2D and warpAffine methods to create the zoom effect.
+
+# compute step size for each partial image zoom. Zooming is an exponential
+# process, so we need to compute the steps on a logarithmic scale.
+f = math.exp(math.log(self.__param.zoom_factor)/zoom_steps)
+
+# copy images because we will modify them
+img_curr = imgCurr.copy()
+img_next = imgNext.copy()
+
+# Do the zoom from one image to the next
+for i in range(0, zoom_steps):
+	zoom_factor = f**i
+	
+	# zoom, the outter image
+	mtx_curr = cv2.getRotationMatrix2D((cx, cy), 0, zoom_factor)
+	img_curr = cv2.warpAffine(imgCurr, mtx_curr, (w, h))
+
+	# zoom the inner image, zoom factor is by the image series
+	# zoom factor smaller than that of the outter image
+	mtx_next = cv2.getRotationMatrix2D((cx, cy), 0, zoom_factor/self.__param.zoom_factor)
+	img_next = cv2.warpAffine(imgNext, mtx_next, (w, h))
+
+	...
+Lets briefly look at how the zoom step size is computed because this may not be obvious to everyone. For the transition between two images we always start with the outter image having the zoom factor 1 and increase this zoom factor until is reaches 2 (the outpainting zoom factor). The inner image starts with the zoom factor 1 divided by the outpainting zoom factor and ends with the zoom factor 1. This transition is supposed to be done in n steps. We need to compute the value of f, the zoom step multiplicator.
+
+ 
+z
+0
+=1(1)	
+z
+n
+=
+z
+0
+∗
+f
+n
+=
+f
+n
+=2 
+The zoom factor 
+z
+0
+ of the first step is always 1. After 
+n
+ steps the zoom factor 
+z
+n
+ is 2. Zooming out n times by the factor f is the same as multiplying the initial factor by 
+f
+n
+. The zoom factor 
+f
+ is then computed by solving the equation for 
+f
+. Which for an outpainting zoom factor of 2 yields:
+
+ 
+ 
+(2)	f=
+e
+l
+o
+g
+(
+2
+)
+n
+ 
+Let us look at a concrete example with a sequence of 6 images generated by Midjourney with an outpainting zoom factor of 2.
+
+
+Basic approach to creating an outpainted zoom animation. The transitions between images are not smooth because Midjourney does not always centre the images correctly.
+Do you notice something? The image transitions are not seamless at all! The reason is that Midjourney does not always generate the outpainted images at the correct position. The images can be shifted slightly!
+
+Fixing Image Misalignment and Content Deviations
+
+The following images show typical inconsistencies in sequences generated by outpainting with Midjourney. On the left you can see two consecutive images of a zoom sequence. The second image has been scaled down and moved to the position where it best matches the first. There is a slight offset between the positions of the two images.
+
+The right image shows slight variations in content at the edge of the scene between the two images. Image 1 was created by zooming out of image 2 with a different prompt that required a slight scene change at the edges. Neither the beard nor the wooden table were present when rendering image 2.
+
+
+Two succesive images of a zoom sequence generated by Midjourney. The second image is scaled down and was moved to the position where it best matches the first one. You can see a misalignment between the red and the green cross. The best match is not in the centre of the first image but slightly beneath the centre.
+
+There is also a content mismatch between the two images. The first image is the one that was outpainted from the second one. Therefor the second one in the series was actually created first. At the time of creating image 2 neither the beard nor the table were present in the scene. Both elements only appeared after changing the prompt and outpainting.
+To correct the misalignment, the second image is not inserted in the centre of the first image, but wherever it matches best. This position is determined using OpenCV's template matching with the normalised cross-correlation algorithm. Both images are then shifted slightly back towards the true centre with each intermediate zoom step. If the script is set up to use 100 zoom steps for each image transition, the misalignment is determined once when the second image is inserted and corrected over the next 100 steps. Once the second image covers the entire field of view, the misalignment is gone.
+
+Fixing the content deviation is easier. The script simply crops the second image by a user-defined factor. In doing so, it simply ignores the content deviation from the second image and takes the image data from the first one instead. The downside is that the available field of view is slightly reduced by doing that.
+
+The debug option "-dbg" adds additional overlays to the video to visualise the misalignment and its corrections.
+
+
+A generated video with debug overlays. You can see how the image misalignment is compensated for in the image transitions.
